@@ -2,7 +2,7 @@ import Game.Metadata
 
 World "RealAnalysisStory"
 Level 8
-Title "The obtain tactic"
+Title "The choose tactic"
 
 Introduction "
 # Extracting information from existential quantifiers
@@ -55,7 +55,8 @@ The symmetry is beautiful:
 - `use` when you have `∃` in the goal (\"here's my specific example\")
 - `choose` when you have `∃` in a hypothesis (\"let me unpack this existence claim\")
 
-This completes your basic logical toolkit! In real analysis, you'll use `obtain` constantly when working with:
+This completes your basic logical toolkit! In real analysis, you'll use `choose` (or a similar
+tactic called `obtain`) constantly when working with:
 - Limit definitions (\"given ε > 0, there exists δ > 0...\")
 - Intermediate Value Theorem (\"there exists c such that f(c) = 0\")
 - Existence theorems throughout analysis

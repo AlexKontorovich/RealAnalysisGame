@@ -5,7 +5,7 @@ import Game.Levels.L1RealAnalysisStory.L04_ring_nf
 import Game.Levels.L1RealAnalysisStory.L05_use
 import Game.Levels.L1RealAnalysisStory.L06_intro
 import Game.Levels.L1RealAnalysisStory.L07_specialize
-import Game.Levels.L1RealAnalysisStory.L08_obtain
+import Game.Levels.L1RealAnalysisStory.L08_choose
 import Game.Levels.L1RealAnalysisStory.L09_big_boss
 
 World "RealAnalysisStory"
