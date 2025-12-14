@@ -27,7 +27,8 @@ You need to give a name to both the value of `c`, and to the hypothesis with whi
 You should be able to figure out how to solve the goal from here.
 "
 
-/-- The `choose` tactic extracts a witness from an existence statement in a hypothesis. -/
+/-- The `choose` tactic extracts a witness from an existence statement in a hypothesis. The syntax is as follows. If you have a hypothesis `h : ∃ x, P x ∧ Q x` where `P x` is one fact about `x` and `Q x` is another, then you can write: `choose x hPx hQx using h` and you'll get the Object `x` and the Assumptions `hPx : P x` and `hQx : Q x`.
+Of course you're free to name `x`, `hPx`, and `hQx` however you like. -/
 TacticDoc choose
 
 /-- If there exists a point where f equals 2, then there exists a point where f² equals 4. -/

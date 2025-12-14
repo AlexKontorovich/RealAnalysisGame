@@ -34,7 +34,8 @@ If you want to be really slick, you can combine the two `intro` commands into
 one: `intro ε hε`. But don't feel obliged.
 "
 
-/-- The `intro` tactic introduces variables and hypotheses from ∀ statements or implications. -/
+/-- The `intro` tactic introduces variables and hypotheses from `∀` statements or implications.
+Here is a sample syntax. If your goal is: `∀ ε > 0, P ε` for some property `P` of `ε`, then you can write `intro ε` (or your favorite name instead of `ε`), and you'll get the Object `ε` and the Goal will change to: `ε > 0 → P ε`. The Goal is now an implication, and so you can use the *same* `intro` tactic again! Write `intro εpos` (or whatever you want to call the hypothesis), and your list of Assumptions will gain the hypothesis `εpos : ε > 0`, and the Goal will change to `P ε`. You can accomplish both at once by writing `intro ε εpos` from the beginning.  -/
 TacticDoc intro
 
 /-- For all positive real numbers, this algebraic identity holds. -/
