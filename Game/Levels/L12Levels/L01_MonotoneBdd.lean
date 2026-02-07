@@ -47,7 +47,7 @@ To prove monotonicity, it's enough to check consecutive terms: if `a m ≤ a (m+
 Pushes negations through quantifiers: `¬∀` becomes `∃¬`, `¬∃` becomes `∀¬`, etc. Essential for proof by contradiction with complex statements.
 
 ### The Helper Lemma: `IterateGap`
-Given a monotone sequence with persistent gaps of size `ε` between subsequences `τ` and `σ`, the orbit `σ^[k] 0` accumulates at least `k * ε` growth from the starting point. This will be proven in Level 3.
+Given a monotone sequence with persistent gaps of size `ε` between subsequences `τ` and `σ`, the orbit `σ^[k] 0` accumulates at least `k * ε` growth from the starting point. This will be proven in Level 4.
 
 `theorem IterateGap (a : ℕ → X) (ha : Monotone a) (ε : X)
   (εpos : ε > 0)
