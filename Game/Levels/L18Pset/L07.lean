@@ -17,7 +17,7 @@ DisabledTheorem AntitoneSeriesOdd
 
 /-- Prove `AntitoneSeriesOdd`
 -/
-Statement {a : ℕ → ℝ} (ha : Antitone a) (apos : ∀ n, 0 ≤ a n) : Antitone (fun n ↦ ∑ k ∈ range (2 * n + 1), (-1)^k * a k) := by
+Statement {a : ℕ → ℝ} (ha : Antitone a) : Antitone (fun n ↦ ∑ k ∈ range (2 * n + 1), (-1)^k * a k) := by
 apply Antitone_of_succ
 intro n
 induction' n with n hn
