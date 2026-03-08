@@ -38,7 +38,7 @@ Now our strategy becomes clear:
 
 ## The Lean Implementation Challenges
 
-In Lean, the first two steps of our natural language proof work fine, but then we encounter the issue of **type coercion** (\"casting\" between different number types). We'll discuss this in more detail later, but again it has to do with the fact that `ℕ`, `ℤ`, `ℚ`, and `ℝ` are all different kinds of things, and we need to be able to move numbers up the \"sophistication\" heirarchy, with natural numbers being the simplest objects and the reals being the most complicated (so much so that we keep postponing their construction).
+In Lean, the first two steps of our natural language proof work fine, but then we encounter the issue of **type coercion** (\"casting\" between different number types). We'll discuss this in more detail later, but again it has to do with the fact that `ℕ`, `ℤ`, `ℚ`, and `ℝ` are all different kinds of things, and we need to be able to move numbers up the \"sophistication\" hierarchy, with natural numbers being the simplest objects and the reals being the most complicated (so much so that we keep postponing their construction).
 
 For example, notice that when we'll write our `have` statement to establish the key inequality:
 
