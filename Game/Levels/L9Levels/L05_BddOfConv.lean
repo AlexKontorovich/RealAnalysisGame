@@ -106,13 +106,13 @@ This tells us something profound: **convergent sequences can't escape to infinit
 
 1. **Two-region strategy** - You split the natural numbers into two parts:
    - Eventually (n ≥ N): where convergence gives you control
-   - Initially (n < N): where you used your TermLtSum theorem
+   - Initially (n < N): where you used your TermLeSum theorem
 
 2. **Constructing clever bounds** - You built `M = 2*|L| + ∑ k ∈ range N, |a k|`, which elegantly captures both regions in a single expression
 
 3. **Case analysis** - You used `by_cases` to handle the two regions separately, applying the appropriate bound for each
 
-4. **Connecting theorems** - You saw how `TermLtSum` from Level 1 became an essential tool for handling finitely many terms
+4. **Connecting theorems** - You saw how `TermLeSum` from Level 1 became an essential tool for handling finitely many terms
 
 ## Why This Matters
 
@@ -127,7 +127,7 @@ The boundedness of convergent sequences is fundamental throughout mathematics:
 
 Notice we assumed `L ≠ 0` in this proof. The case where `L = 0` is left as an exercise, but the idea is similar:
 - Use convergence with `ε = 1` to bound terms eventually by `1`
-- Handle the finitely many initial terms with TermLtSum
+- Handle the finitely many initial terms with TermLeSum
 - The bound becomes `M = 1 + ∑ k ∈ range N, |a k|`
 
 ## Looking Ahead
