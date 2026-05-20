@@ -53,7 +53,7 @@ always being able to reply with a finite minimum number of hours `N`,
 after which the tolerance will be achieved, we can say
 that the equipment **converges**.
 
-Now let's read Weierstrauss's (or is it Bolzano's?) definition again. We have some process
+Now let's read Weierstrass's (or is it Bolzano's?) definition again. We have some process
 that at time `n` returns a reading `a (n)` (think: widget length). Our ultimate goal is to make the length `L`. If
 for any tolerance `ε > 0`, no matter how small, there will always exist some minimum
 time `N`, so that, for any future time, `n ≥ N`,
