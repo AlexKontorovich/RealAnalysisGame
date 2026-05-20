@@ -27,8 +27,8 @@ TheoremDoc SqueezeThm as "SqueezeThm" in "aₙ"
 
 /-- Prove this
 -/
-Statement SqueezeThm (a b c : ℕ → ℝ) (L : ℝ) (aToL : SeqLim a L)
-(cToL : SeqLim c L) (aLeb : ∀ n, a n ≤ b n) (bLec : ∀ n, b n ≤ c n) :
+Statement SqueezeThm (a b c N : ℕ → ℝ) (L : ℝ) (aToL : SeqLim a L)
+(cToL : SeqLim c L) (aLeb : ∀ n ≥ N, a n ≤ b n) (bLec : ∀ n ≥ N, b n ≤ c n) :
   SeqLim b L := by
 intro ε hε
 specialize aToL ε hε
