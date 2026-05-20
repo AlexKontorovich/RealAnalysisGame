@@ -15,7 +15,7 @@ DisabledTheorem MonotoneSeriesEven
 
 /-- Prove `MonotoneSeriesEven`
 -/
-Statement {a : ℕ → ℝ} (ha : Antitone a) (apos : ∀ n, 0 ≤ a n) :
+Statement {a : ℕ → ℝ} (ha : Antitone a) :
   Monotone (fun n ↦ ∑ k ∈ range (2 * n), (-1)^k * a k) := by
 apply Monotone_of_succ
 intro n
