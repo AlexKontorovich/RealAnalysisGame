@@ -22,58 +22,46 @@ splits long lecture runs into better subtopics.
 
 ## Proposed Dependency Graph
 
-```mermaid **I'm not sure what Mermaid is? Can you just lay out the dependency graph in ascii?**
-graph TD
-  Tutorial[Proof Tutorial]
-  SeqIntro[Intro to Sequences]
-  AbsSqueeze[Absolute Values and Squeeze]
-  AlgLimits[Algebraic Limit Theorems]
-  Cauchy[Cauchy Sequences]
-  Subsequences[Subsequences]
-  Bolzano[Bolzano-Weierstrass]
-  Reals[The Real Numbers]
-  SeriesIntro[Intro to Series]
-  AbsAltSeries[Absolute and Alternating Series]
-  Rearrangement[Riemann Rearrangement]
-  Conditional[Conditional Convergence]
-  FunLimits[Function Limits and Continuity]
-  Derivatives[Derivatives]
-  Uniformity[Uniformity]
-  RiemannSums[Riemann Sums and Integration]
-  Topology[Topology and Compactness]
-  HeineBorel[Heine-Borel]
-  Calculus[Calculus Capstone]
-  Taylor[Taylor Series]
-  Fourier[Fourier Series]
+```text
+Core sequence and real-number spine:
 
-  Tutorial --> SeqIntro
-  SeqIntro --> AbsSqueeze
-  AbsSqueeze --> AlgLimits
-  AlgLimits --> Cauchy
-  AlgLimits --> Subsequences
-  Cauchy --> Subsequences
-  Subsequences --> Bolzano
-  Cauchy --> Reals
-  Bolzano --> Reals
-  Reals --> SeriesIntro
-  SeriesIntro --> AbsAltSeries
-  AbsAltSeries --> Rearrangement
-  Rearrangement --> Conditional
-  Reals --> FunLimits
-  FunLimits --> Derivatives
-  FunLimits --> Uniformity
-  Uniformity --> RiemannSums
-  FunLimits --> RiemannSums
-  Reals --> Topology
-  Topology --> HeineBorel
-  HeineBorel --> Uniformity
-  HeineBorel --> RiemannSums
-  Derivatives --> Calculus
-  RiemannSums --> Calculus
-  SeriesIntro --> Taylor
-  Derivatives --> Taylor
-  Taylor -. optional .-> Fourier
-  Uniformity -. optional .-> Fourier
+Proof Tutorial
+  -> Intro to Sequences
+    -> Absolute Values and Squeeze
+      -> Algebraic Limit Theorems
+        -> Cauchy Sequences
+          -> Subsequences
+            -> Bolzano-Weierstrass
+              -> The Real Numbers
+
+Series branch:
+
+The Real Numbers
+  -> Intro to Series
+    -> Absolute and Alternating Series
+      -> Riemann Rearrangement
+        -> Conditional Convergence (optional side world)
+
+Calculus branch:
+
+The Real Numbers
+  -> Function Limits and Continuity
+    -> Derivatives
+    -> Riemann Sums
+      -> Uniformity
+        -> Topology and Compactness
+          -> Heine-Borel
+            -> Continuous Functions Are Integrable
+              -> Calculus Capstone / FTC
+
+Optional advanced branch:
+
+Intro to Series + Derivatives
+  -> Taylor Series
+    -> Fourier Series (optional expansion)
+
+Taylor Series also benefits from Uniformity.
+Fourier Series also depends on Integration/Uniformity.
 ```
 
 ## World Plan
@@ -82,7 +70,7 @@ graph TD
 
 Purpose: give the player basic Lean grammar before analysis starts.
 
-Current levels to include: **We're going to change how we implement the tutorial, but this is fine for now**
+Current levels to include:
 
 - `Introduction to Lean`: `apply`
 - `The rfl tactic`: `rfl`
@@ -98,7 +86,9 @@ Boss: `Big Boss: The Ultimate Tactic Challenge`.
 
 Notes: I would keep `choose` here, even though it becomes truly important for
 subsequences later. The player should already know that existential data can be
-unpacked before the Cauchy/subsequence worlds start leaning on it heavily. **Yes, the other use of `choose` will be introduced in due course**
+unpacked before the Cauchy/subsequence worlds start leaning on it heavily. The
+subsequence world can then reintroduce the stronger `choose ... using ...`
+pattern just in time.
 
 ### 2. Intro to Sequences
 
@@ -108,7 +98,8 @@ the first algebraic limit theorem.
 Current levels to include:
 
 - `The Convergence of a Sequence`: `SeqLim`, `ConstLim`
-- `Archimedean Property`: `ArchProp`, `push_cast`, `bound` **This will no longer be a theorem we prove; we'll quote it for now and later come back to prove it, once we've constructed the Real Numbers**
+- `Archimedean Property`: quote `ArchProp` as an available fact for now;
+  introduce `push_cast` and `bound` through its use rather than proving it here
 - `First Real Limit`: `OneOverNLimZero`, `linarith`, `field_simp`,
   `exact_mod_cast`
 - `NonConvergence`: `SeqConv`, `(-1)^n` does not converge
@@ -120,6 +111,10 @@ Boss: `SumLim`.
 
 Notes: this world should be the first place where epsilon bookkeeping feels
 like a reusable pattern rather than a one-off computation.
+
+Later return: after constructing the real numbers, add a level proving
+`ArchProp` from completeness. The early sequence world should borrow this fact;
+the real-number world should eventually explain why the borrowing was justified.
 
 ### 3. Absolute Values and Squeeze
 
@@ -241,6 +236,8 @@ Future additions:
 
 - equivalence classes of Cauchy rational sequences, if this becomes playable
 - rational density
+- proof of `ArchProp` from completeness, closing the loop on the early quoted
+  fact
 - least upper bound property as an analytic theorem here, or later in topology
 
 Notes: the current topology world later proves `HasLUB_of_BddNonempty`.
@@ -312,6 +309,8 @@ Notes: this is already shaped like a good world.
 Purpose: give the contrasting theorem: conditional convergence is flexible
 enough to rearrange to any target.
 
+Status: optional side world branching off `Riemann Rearrangement`.
+
 Current levels to include:
 
 - `Conditional Convergence Theorem`
@@ -326,7 +325,9 @@ Needs development:
 
 Notes: this should be a separate world from `Riemann Rearrangement`. The player
 should feel the sharp dichotomy: absolute convergence gives invariance;
-conditional convergence gives controllable chaos. **Yes, this world should be an optional world off to the side of Rearrangement. And indeed, it needs further development to be cleanly playable.**
+conditional convergence gives controllable chaos. It should not block the main
+calculus route, and it needs further development before it becomes cleanly
+playable.
 
 ### 13. Function Limits and Continuity
 
@@ -378,46 +379,49 @@ Boss: future `MeanValueTheorem`.
 Notes: right now this is more of a seed than a world. It should eventually be
 one of the main roads into the Fundamental Theorem of Calculus.
 
-### 15. Uniformity
+### 15. Riemann Sums
 
-Purpose: separate pointwise control from uniform control.
-
-Current levels to include:
-
-- `Uniform Convergence`: `UnifConv`, `Cont_of_UnifConv`
-- `Compactness`: `UnifContOn_of_Compact`, once compactness is available
-
-Boss: `Cont_of_UnifConv` for uniform convergence, then
-`UnifContOn_of_Compact` after the compactness dependency is established.
-
-Notes: this could be one world with two chapters, or two worlds:
-`Uniform Convergence` and `Uniform Continuity`. If the game UI benefits from
-shorter worlds, split it. **Wait, the whole point of the original game was for everything to arrive "just in time". So Uniformity and Compactness came only after they were actually needed, in Riemann Integration!**
-
-### 16. Riemann Sums and Integration
-
-Purpose: define the Riemann integral via sums and prove convergence under
-uniform continuity.
+Purpose: define the Riemann integral via sums, prove simple examples, and make
+the player discover exactly why ordinary pointwise continuity is not enough for
+the convergence proof.
 
 Current levels to include:
 
 - `Integration`: `RiemannSum`, `HasIntegral`, `IntegrableOn`,
   integrability of `fun x => x`
 - `Riemann Sum Refinement`: `RiemannSumRefinement`
-- `Integration Converges`: `HasIntegral_of_UnifContOn`
+- `Integration Converges`: first attempted proof path toward
+  `HasIntegral_of_UnifContOn`
+
+Boss: `RiemannSumRefinement`.
+
+Notes: this world should end with a genuine need: to prove integrability of
+continuous functions, the estimates have to be uniform across the interval. This
+sets up `Uniformity` as a mathematical necessity, not as a detached concept.
+
+### 16. Uniformity
+
+Purpose: introduce uniform convergence and uniform continuity exactly when the
+integration proof demands uniform control.
+
+Current levels to include:
+
+- `Uniform Convergence`: `UnifConv`, `Cont_of_UnifConv`
+- `Integration Converges`: `UnifContOn`, `HasIntegral_of_UnifContOn`
 - `Uniform Convergence Implies Integrability`: `Integrable_of_UnifConv`
 
-Boss: `HasIntegral_of_UnifContOn`, with `Integrable_of_UnifConv` as an
-advanced follow-up boss.
+Boss: `HasIntegral_of_UnifContOn`.
 
-Notes: the current `Integration` level introduces several finite-sum theorem
-docs. Those should probably be unlocked in `Intro to Series` or a shared
-finite-sums toolkit before this world starts.
+Notes: the current ordering can still be adjusted internally. The key narrative
+point is that uniformity arrives because Riemann sums require one `δ` that
+works across many sample points. `Integrable_of_UnifConv` may fit better as an
+advanced follow-up after the basic uniform-continuity integration theorem.
 
 ### 17. Topology and Compactness
 
 Purpose: introduce open balls, open and closed sets, compactness, and the least
-upper bound property in the form needed for Heine-Borel.
+upper bound property because uniform continuity on closed intervals now needs a
+source.
 
 Current levels to include:
 
@@ -435,7 +439,8 @@ world end with `IsClosed_of_Compact`.
 ### 18. Heine-Borel
 
 Purpose: prove the full compactness characterization for closed bounded
-subsets of the real line.
+subsets of the real line, then feed it back into uniform continuity and
+integration.
 
 Current levels to include:
 
@@ -451,7 +456,30 @@ Boss: a future single theorem, perhaps:
 Notes: the current two levels are strong, but the world wants a final named
 theorem that says "this is Heine-Borel" in one place.
 
-### 19. Calculus Capstone
+### 19. Continuous Functions Are Integrable
+
+Purpose: cash out the just-in-time topology arc by proving that continuous
+functions on closed intervals are integrable.
+
+Current levels to include:
+
+- `Compactness`: `UnifContOn_of_Compact`, once `IsCompact` is available
+- `Integration Converges`: use `HasIntegral_of_UnifContOn`
+
+Needs development:
+
+- closed intervals are compact as the standard input
+- continuous on `[a,b]` implies uniformly continuous on `[a,b]`
+- continuous on `[a,b]` implies integrable on `[a,b]`
+
+Boss: future `ContinuousIntegrableOnCompact` or
+`ContinuousIntegrableOnClosedInterval`.
+
+Notes: this is the payoff for introducing compactness. The player should first
+feel the need for uniformity in Riemann sums, then use Heine-Borel to obtain it
+from ordinary continuity on closed intervals.
+
+### 20. Calculus Capstone
 
 Purpose: assemble continuity, compactness, derivatives, and integrals into the
 theorems students expect from calculus.
@@ -487,7 +515,7 @@ Likely dependencies:
 - `Intro to Series`
 - `Absolute and Alternating Series`
 - `Derivatives`
-- maybe `Uniformity`
+- `Uniformity`, if the world proves convergence of Taylor remainders uniformly
 
 Possible boss:
 
@@ -532,16 +560,17 @@ the first complete game.
 | 9 | Intro to Series | Basel comparison level | yes, named theorem |
 | 10 | Absolute and Alternating Series | `AlternatingSeriesTest` | no |
 | 11 | Riemann Rearrangement | `RearrangementThm` | no |
-| 12 | Conditional Convergence | conditional convergence theorem | needs supporting levels |
+| 12 | Conditional Convergence | conditional convergence theorem | optional; needs supporting levels |
 | 13 | Function Limits and Continuity | `Cont_Comp` | yes, continuous algebra |
 | 14 | Derivatives | none yet | yes, MVT |
-| 15 | Uniformity | `Cont_of_UnifConv` / `UnifContOn_of_Compact` | maybe split |
-| 16 | Riemann Sums and Integration | `HasIntegral_of_UnifContOn` | no |
-| 17 | Topology and Compactness | `HasLUB_of_BddNonempty` | maybe |
+| 15 | Riemann Sums | `RiemannSumRefinement` | no |
+| 16 | Uniformity | `HasIntegral_of_UnifContOn` | no |
+| 17 | Topology and Compactness | `HasLUB_of_BddNonempty` | open: LUB here or in Real Numbers |
 | 18 | Heine-Borel | interval/subset compactness | yes, named `HeineBorel` |
-| 19 | Calculus Capstone | `IVT` currently | yes, FTC |
-| 20 | Taylor Series | future | yes |
-| 21 | Fourier Series | future optional | yes |
+| 19 | Continuous Functions Are Integrable | future continuous integrability theorem | yes |
+| 20 | Calculus Capstone | `IVT` currently | yes, FTC |
+| 21 | Taylor Series | future | yes |
+| 22 | Fourier Series | future optional | yes |
 
 ## Migration Notes
 
@@ -555,7 +584,7 @@ the first complete game.
    structure.
 4. Add explicit boss levels where the current material ends abruptly:
    algebraic limits, series comparison, continuous algebra, derivatives,
-   Heine-Borel, and FTC.
+   Heine-Borel, continuous integrability, and FTC.
 5. Once the topic worlds compile, update `Game.lean` to import the topic
    wrappers and define dependencies between topic worlds instead of lecture
    worlds.
@@ -569,6 +598,8 @@ the best next additions:
 - `ProdLim`: product theorem without nonzero hypotheses.
 - `QuotLim`: quotient theorem.
 - `ComparisonTest`: a reusable series comparison theorem.
+- `ArchProp`: prove the Archimedean property from completeness after the real
+  numbers are constructed.
 - `HeineBorel`: closed and bounded iff compact, or at least
   `IsCompact_of_ClosedBdd`.
 - `DerivativeImpliesContinuous`.
