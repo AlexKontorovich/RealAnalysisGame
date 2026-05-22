@@ -10,11 +10,11 @@ Introduction "
 
 Our first step to making Newton's argument rigorous is
 to spell out *exactly* what we mean by a sequence
-$a_n$ converging. It will take a little work to build up to the definition, and more importantly, *why*
+$a_n$ converging to a limit. It will take a little work to build up to the definition, and more importantly, *why*
 that might seem like a reasonable definition to have.
 
 But first: for some reason (likely Euler is to blame), mathematics has *two* completely different conventions for how to write functions. For general functions $f : \\mathbb R \\to\\mathbb R$,
-we write $f(x)$, with parentheses. But when work with sequences, $a_n$, meaning,
+we write $f(x)$, with parentheses. But when working with sequences, $a_n$, meaning,
 $a_0, a_1, a_2, \\dots$, we bizarrely switch instead to subscripts.
 Why? Historical accident.
 A sequence is nothing but a function whose \"domain\" (that is, the set of
@@ -23,7 +23,7 @@ with tradition and unify the two conventions, henceforth writing
 $a : \\mathbb N \\to \\mathbb R$ for sequences of real numbers, $a (0), a (1),
 a (2), \\dots$.
 
-Now, the definition that mathematicians eventually came up with
+Now, back to limits. The definition that mathematicians eventually came up with
 for what it means for a sequence to converge, was so intricate (at least
 at first sight) that it had to be invented *twice*!
 The eventual formulation crystallized through the work of Karl Weierstrass in the 1860s, who transformed analysis from an intuitive art into a rigorous science. However, the seeds of this idea appeared much earlier in the work of Bernard Bolzano. In the 1810s and 1820s, Bolzano was developing remarkably modern ideas about continuity and limits, but he was too far ahead of his time for the mathematical community to accept these abstract concepts.
@@ -31,22 +31,31 @@ Only by Weierstrass's time -- a half-century later -- did these ideas catch on.
 
 Without further ado, here it is:
 
+**Definition** (`SeqLim`):
 Given a sequence `a : ℕ → ℝ` and a real number `L : ℝ`, we
-write `lim a = L` and
-say that the sequence `a` **converges** to `L`,
+write `SeqLim a L` and
+say that the sequence `a` **converges** to the limit `L`,
  if:
 
-For every `ε > 0`, there exists `N : ℕ` such that, for all `n ≥ N`, we have `|a (n) - L| < ε`.
+For every `ε > 0`, there exists some `N : ℕ` such that, for all `n ≥ N`, we have `|a (n) - L| < ε`.
 
 
-This definition is probably not the first, or second, or tenth thing you might've come up with.
+This definition is probably not the first, or second, or tenth thing you might've come up with!
 But over time, I hope you'll come to see that it
  embodies a beautiful negotiation between precision and effort.
 
- I like to think of it as a conversation between an Engineer and a Machinist. The Engineer arrives with specifications: 'We're going to make this widget, and I need its length to be 1 foot, with an error tolerance
- of 1/100 of an inch'. The Machinist replies: 'Sure, I can do that, but I'll have to run my special equipment for at least 10 hours to guarantee that tolerance.' The Enginner
- replies: 'I'm sorry, I misspoke, can we change the tolerance
- to 1/1000 of an inch?' The Machinist replies: 'Oof, yeah we can do it, but it'll cost ya. I'll need at least 40 hours of operation, but after that, I'll guarantee it.'
+ I like to think of it as a conversation between an Engineer and a Machinist:
+
+ The Engineer arrives with specifications: \"We're going to make this widget, and I need its length to be 1 foot, with an error tolerance
+ of 1/100 of an inch\".
+
+ The Machinist replies: \"Sure, I can do that, but I'll have to run my special equipment for at least 10 hours to guarantee that tolerance.\"
+
+ The Enginner
+ thinks for a moment: \"I'm sorry, I misspoke, can we change the tolerance
+ to 1/1000 of an inch?\"
+
+ The Machinist replies: \"Oof, yeah we can do it, but it'll cost ya. I'll need at least 40 hours of operation, but after that, I'll guarantee it.\"
 
 As long as this conversation can continue regardless of *whatever* tolerance `ε > 0` the Engineer requires, with the Machinist
 always being able to reply with a finite minimum number of hours `N`,
@@ -70,7 +79,7 @@ Notice something else about the definition: It makes no mention of something hap
 In Lean, the definition is written like so:
 
 `def SeqLim (a : ℕ → ℝ) (L : ℝ) : Prop :=
-  ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, |a n - L| < ε`
+  ∀ ε > 0, ∃ N, ∀ n ≥ N, |a n - L| < ε`
 
 This syntax should be familiar from the `have` tactic you already know and love.
 The special symbol `def` (instead of `have`) means that we're about to define something, and
@@ -92,19 +101,18 @@ Prove that the constant sequence converges to the same constant.
 That is, suppose that you have a sequence `a : ℕ → ℝ`, and there's a real number
 `L`, and a hypothesis that, for all values of `n`, we have  `a (n) = L`; then prove that `a` does converge, and converges to `L`. This is the simplest possible case: if our 'factory' always produces the exact target value `L`, then we can meet any tolerance requirement immediately!
 
-You may find useful a new tactic called `change`. It allows you to replace a goal (or hypothesis) by
-something that is definitionally equal to it. In our example here,
+You may find it useful to call on a new tactic called `change`. It allows you to replace a goal (or, when coupled with `at`, a hypothesis) by its definition. In our example here,
 you will see the goal as `SeqLim a L`. What are you supposed to do with that,
 how can you make progress? Well, if you remember how `SeqLim` is defined,
 then you can replace the goal with the definition, by writing
 
-`change ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, |a n - L| < ε`
+`change ∀ ε > 0, ∃ N, ∀ n ≥ N, |a n - L| < ε`
 
 Lean will then change the goal to its definition.
 Remember that `ε`, `N`, and `n` are all dummy variables
 here, so you can have some fun:
 
-`change ∀ Alice > 0, ∃ Bob : ℕ, ∀ blah ≥ Bob, |a blah - L| < Alice`
+`change ∀ Alice > 0, ∃ Bob, ∀ blah ≥ Bob, |a blah - L| < Alice`
 
 This may come in handy later. (Not Alice and Bob *per se*, but the ability to give better names for dummy variables, so as not to clash with already existing variable names...)
 
@@ -124,7 +132,7 @@ Ok, get to it!
 do this at a hypothesis; if you have a hypothesis `h : X`, you can write `change Y at h`, and `h` will change to `h : Y`. -/
 TacticDoc change
 
-/-- `(a : ℕ → ℝ) (L : ℝ) := ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, |a n - L| < ε`
+/-- `(a : ℕ → ℝ) (L : ℝ) := ∀ ε > 0, ∃ N, ∀ n ≥ N, |a n - L| < ε`
 
 For a sequence `a : ℕ → ℝ` and a real number `L : ℝ`, we say that `SeqLim a L` holds if: for every `ε > 0`, there exists `N : ℕ` such that for all `n ≥ N`, we have `|a n - L| < ε`. -/
 DefinitionDoc SeqLim as "SeqLim"

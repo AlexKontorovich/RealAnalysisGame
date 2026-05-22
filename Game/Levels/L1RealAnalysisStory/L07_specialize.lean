@@ -26,7 +26,8 @@ This is where the `specialize` command comes in. You can write `specialize hf t`
 I'm sure you can solve the goal from there yourself!
 "
 
-/-- The `specialize` tactic applies a universal statement in a hypothesis to a specific value. -/
+/-- The `specialize` tactic applies a universal statement in a hypothesis to a specific value. If you have
+a hypothesis  -/
 TacticDoc specialize
 
 /-- If a function of `x` always equals `x²`, then it equals `t²` when evaluated at `t`. -/

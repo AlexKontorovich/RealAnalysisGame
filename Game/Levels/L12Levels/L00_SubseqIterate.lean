@@ -48,18 +48,7 @@ We'll spare you that proof and give you the theorem `succ_iterate`.
 
 To prove that `σ` is a `Subseq`, the definition speaks of all `i < j`, but it's enough to do it one step at a time. The theorem `subseq_of_succ` says that it's enough to show that `σ n < σ (n+1)` holds for all `n` to conclude `Subseq σ`. You can `apply` this fact to reduce showing `Subseq σ` to just showing that `σ` increases from `n` to `n+1`.
 
-### Tactic: `show`
-
-Syntax: `show fact by proof`. For example, if you want to rewrite by the fact that `σ (σ^[n] n₀) = σ^[n+1] n₀` without a separate `have` declaration, you can write:
-
-`rewrite [show σ (σ^[n] n₀) = σ^[n+1] n₀ by apply succ_iterate]`
-
 "
-
-/-- The `show` tactic has syntax `show fact by proof`. -/
-TacticDoc «show»
-
-NewTactic «show»
 
 theorem succ_iterate (σ : ℕ → ℕ) (k : ℕ) (n : ℕ) :
 σ (σ^[k] n) = σ^[k+1] n :=

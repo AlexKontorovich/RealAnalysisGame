@@ -26,44 +26,25 @@ This means that you *will* be able to
 `rewrite [h2]` successfully,
 but then you will *not* be able to rewrite by `h1`, because the (invisible) parentheses  go the wrong way. (Hint: If you want to know how things are grouped but don't see parentheses, you can hover your cursor over the text in the Goal State, and Lean will show you the groupings. Try it!)
 
-Now, in natural language, there are times when you might want to
-record an auxiliary fact: \"let's
-*have* the fact that such and such ...\". The Lean
-syntax for this is as follows:
+To get around this issue, you can `rewrite` by a fact that you prove on the spot, using the new `show` tactic.
 
-`have NewFactName (Assumptions) : Conclusion := by Proof`
+## New Tactic: `show`
 
-That is, you first write `have`; then give
-the new hypothesis a name; then include any
-assumptions, like `(x : ℝ)`, meaning, `x`
-is a real number, etc (the symbol `ℝ` is written with a backslash, then capital `R`, then space); then you put a colon,
-and then state the conclusion; then you
-put a colon-equals and the word `by`; and finally you give the proof.
+The syntax is: `show factToBeProved by giveTheProof`. For example, this might come in handy:
 
-For example, if you wanted to declare
-the new fact that, say, for any real `u` and `v`,
+`rewrite [show (x + y) ^ 2 = (x ^ 2 + y ^ 2) + 2 * (x * y) by ring_nf]`
 
-`(u + v) ^ 2 = (u ^ 2 + v ^ 2) + 2 * (u * v)`
+What this is doing is using `ring_nf` to prove the fact that `(x + y) ^ 2` equals `(x ^ 2 + y ^ 2) + 2 * (x * y)`.
+This allows you to control what `ring_nf` is proving for you,
+and immediately `rewrite` by that fact.
 
-and you wanted to call this fact `huv` (a hypothesis on `u` and `v`),
-and you wanted to prove this fact by
-invoking the ring normal form tactic,
- then you would give Lean the command:
-
-`have huv (u v : ℝ) : (u + v) ^ 2 = (u ^ 2 + v ^ 2) + 2 * (u * v) := by ring_nf`
-
-This will add to your list of hypotheses
-the fact: `huv : ∀ (u v : ℝ), (u + v) ^ 2 = (u ^ 2 + v ^ 2) + 2 * (u * v)`.
-
-Something like this (if not exactly this)
-will be useful to you in solving this problem.
 "
-/-- The `have` tactic has the following
-syntax: `have NewHypothesisName (Assumptions) : Claim := by GiveTheProof`.
-This creates a new hypothesis called
-`NewHypothesisName : ∀ (Assumptions), ClaimHolds`.
- -/
-TacticDoc «have»
+
+/-- The `show` tactic has syntax `show fact by proof`. -/
+TacticDoc «show»
+
+NewTactic «show»
+
 
 /-- Show that there exists a constant `c` so that, for any real numbers `x` and `y` with `x ^ 2 + y ^ 2 = 2` and `x * y = 1`, we have `(x + y) ^ 2 = c`. -/
 Statement :
@@ -74,15 +55,9 @@ Statement :
   after `intro ε`, the Goal became `ε > 0 → BlahBlah`.
   Then what did you do?..."
   intro h1 h2
-  have hxy : (x + y) ^ 2 = (x ^ 2 + y ^ 2) + 2 * (x * y) := by ring_nf
-  rewrite [hxy]
+  rewrite [show (x + y) ^ 2 = (x ^ 2 + y ^ 2) + 2 * (x * y) by ring_nf]
   rewrite [h1]
   rewrite [h2]
   ring_nf
 
-NewTactic «have»
-
-Conclusion "Did you end up using `huv`?
-And then `specialize`ing it with `u` and `v` replaced, respectively, by `x` and `y`?
-Or did you think of going via the more direct route:
-`have hxy : (x + y) ^ 2 = (x ^ 2 + y ^ 2) + 2 * (x * y) := by ring_nf`?"
+Conclusion "Great job using the `show` tactic to control what fact you wanted to prove!"

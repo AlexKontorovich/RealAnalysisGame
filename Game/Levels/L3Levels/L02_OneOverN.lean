@@ -159,17 +159,25 @@ Statement OneOverNLimZero (a : ℕ → ℝ) (ha : ∀ n, a n = 1 / n) : SeqLim a
   change ∀ ε > 0, ∃ N, ∀ n ≥ N, |a n - 0| < ε
   intro ε hε
   Hint (hidden := true) (strict := true) "We need to find `N`. Use the Archimedean Property: there exists `N` such that `1 / ε < N`. Try: `have f1 : ∃ (N : ℕ), 1 / ε < N := by apply ArchProp hε`"
-  have f1 : ∃ (N : ℕ), 1 / ε < N := by apply ArchProp hε
+  have f1 : ∃ (N : ℕ), 0 < N ∧ 1 / N < ε := by sorry -- apply ArchProp hε
   Hint (hidden := true) (strict := true) "Presumably you know that you
   should `choose N hN using f1` at this stage. But maybe you'd like to give `hN` a more descriptive name (so that I can keep giving you hints). Try `choose N eps_inv_lt_N using f1`."
-  choose N eps_inv_lt_N using f1
+  choose N Npos hN using f1
   use N
   Hint (hidden := true) (strict := true) "Again, you presumably you know
   now to do `intro n hn`. But let's also give `hn` the more descriptive name `n_ge_N`. So that I can keep giving you hints, try `intro n n_ge_N`."
-  intro n n_ge_N
-  ring_nf
+  intro n hn
   specialize ha n
   rewrite [ha]
+  rewrite [show 1 / (n : ℝ) - 0 = 1 / n by ring_nf]
+  have Npos' : (0 : ℝ) < N := by exact_mod_cast Npos
+  have hn' : (N : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+  have hnpos : (0 : ℝ) < (n : ℝ) := by linarith [Npos', hn']
+  have f3 : 0 ≤ 1 / (n : ℝ) := by positivity
+  rewrite [show |1 / (n : ℝ)| = 1 / (n : ℝ) by apply abs_of_nonneg f3]
+  have f4 : 1 / (n : ℝ) ≤ 1 / N := by field_simp; apply hn'
+  linarith [hN, f4]
+
   Hint (hidden := true) (strict := true) "Simplify the absolute value: `have f2 : |1 / (n : ℝ)| = 1 / n := by bound`. Note the explicit casting to the reals, so that this is not a statement about natural numbers!"
   have f2 : |1 / (n : ℝ)| = 1 / n := by bound
   rewrite [f2]
