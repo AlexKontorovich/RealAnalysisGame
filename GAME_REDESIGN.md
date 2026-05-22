@@ -22,7 +22,7 @@ splits long lecture runs into better subtopics.
 
 ## Proposed Dependency Graph
 
-```mermaid
+```mermaid **I'm not sure what Mermaid is? Can you just lay out the dependency graph in ascii?**
 graph TD
   Tutorial[Proof Tutorial]
   SeqIntro[Intro to Sequences]
@@ -82,7 +82,7 @@ graph TD
 
 Purpose: give the player basic Lean grammar before analysis starts.
 
-Current levels to include:
+Current levels to include: **We're going to change how we implement the tutorial, but this is fine for now**
 
 - `Introduction to Lean`: `apply`
 - `The rfl tactic`: `rfl`
@@ -98,7 +98,7 @@ Boss: `Big Boss: The Ultimate Tactic Challenge`.
 
 Notes: I would keep `choose` here, even though it becomes truly important for
 subsequences later. The player should already know that existential data can be
-unpacked before the Cauchy/subsequence worlds start leaning on it heavily.
+unpacked before the Cauchy/subsequence worlds start leaning on it heavily. **Yes, the other use of `choose` will be introduced in due course**
 
 ### 2. Intro to Sequences
 
@@ -108,7 +108,7 @@ the first algebraic limit theorem.
 Current levels to include:
 
 - `The Convergence of a Sequence`: `SeqLim`, `ConstLim`
-- `Archimedean Property`: `ArchProp`, `push_cast`, `bound`
+- `Archimedean Property`: `ArchProp`, `push_cast`, `bound` **This will no longer be a theorem we prove; we'll quote it for now and later come back to prove it, once we've constructed the Real Numbers**
 - `First Real Limit`: `OneOverNLimZero`, `linarith`, `field_simp`,
   `exact_mod_cast`
 - `NonConvergence`: `SeqConv`, `(-1)^n` does not converge
@@ -326,7 +326,7 @@ Needs development:
 
 Notes: this should be a separate world from `Riemann Rearrangement`. The player
 should feel the sharp dichotomy: absolute convergence gives invariance;
-conditional convergence gives controllable chaos.
+conditional convergence gives controllable chaos. **Yes, this world should be an optional world off to the side of Rearrangement. And indeed, it needs further development to be cleanly playable.**
 
 ### 13. Function Limits and Continuity
 
@@ -392,7 +392,7 @@ Boss: `Cont_of_UnifConv` for uniform convergence, then
 
 Notes: this could be one world with two chapters, or two worlds:
 `Uniform Convergence` and `Uniform Continuity`. If the game UI benefits from
-shorter worlds, split it.
+shorter worlds, split it. **Wait, the whole point of the original game was for everything to arrive "just in time". So Uniformity and Compactness came only after they were actually needed, in Riemann Integration!**
 
 ### 16. Riemann Sums and Integration
 
