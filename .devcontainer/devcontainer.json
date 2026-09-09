@@ -11,11 +11,16 @@
   "updateRemoteUserUID": true,
   // I don't know why I need this, but I did...
   "overrideCommand": true,
+  // Note: we deliberately do *not* run `lake update` here. The revisions in
+  // `lake-manifest.json` are the ones the game is known to build with, and re-resolving
+  // them would also move mathlib's transitive dependencies, which invalidates the
+  // mathlib build cache. `lake exe cache get` is what keeps the build minutes instead of
+  // hours -- without it mathlib is compiled from scratch.
   "onCreateCommand": {
-    "npm_install": "(cd ~/lean4game && npm install) || echo \"ERROR: `cd ~/lean4game && npm install` failed\", try running it manually in your dev-container!",
-    "lake_build": "(cd ~/game && lake update -R && lake build) || echo \"ERROR: `cd ~/game && lake update -R && lake exe cache get && lake build` failed!, try running it manually in your dev-container!\""
+    "npm_install": "(cd ~/lean4game && npm install) || echo \"ERROR: 'cd ~/lean4game && npm install' failed, try running it manually in your dev-container!\"",
+    "lake_build": "(cd ~/game && lake exe cache get && lake build) || echo \"ERROR: 'cd ~/game && lake exe cache get && lake build' failed, try running it manually in your dev-container!\""
   },
-  "postStartCommand": "(cd ~/lean4game && export VITE_LEAN4GAME_SINGLE=true && npm start) || echo \"ERROR: Did not start game server! See if you have warnings above, then try to start it manually using `cd ~/lean4game && export VITE_LEAN4GAME_SINGLE=true && npm start`!\"",
+  "postStartCommand": "(cd ~/lean4game && export VITE_LEAN4GAME_SINGLE=true && npm start) || echo \"ERROR: Did not start game server! See if you have warnings above, then try to start it manually using 'cd ~/lean4game && export VITE_LEAN4GAME_SINGLE=true && npm start'!\"",
   "customizations": {
     "vscode": {
       "settings": {

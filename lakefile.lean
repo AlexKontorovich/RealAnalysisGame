@@ -23,7 +23,11 @@ Deactivate local version with `lake update -R`.
 def RemoteGameServer : Dependency := {
   name := `GameServer
   scope := "hhu-adam"
-  src? := DependencySrc.git "https://github.com/leanprover-community/lean4game.git" "chore/bump-v4.26.0" "server"
+  -- Pinned to a commit rather than a tag: `lean4game` has no release tag for every Lean
+  -- version, and this is the newest `lean4game` commit still on Lean v4.26.0.
+  -- `.devcontainer/Dockerfile` reads this revision back out of `lake-manifest.json`,
+  -- so run `lake update -R` after changing it.
+  src? := DependencySrc.git "https://github.com/leanprover-community/lean4game.git" "213bb2456550bb4a6b52124ef0e9489518b6b02f" "server"
   version? := none
   opts := ∅
 }

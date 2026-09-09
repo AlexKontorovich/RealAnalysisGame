@@ -1,0 +1,11 @@
+# The dev container image only needs `lean-toolchain` and `lake-manifest.json`, but the
+# build context is the whole repository. Once the game has been built once, `.lake/`
+# holds mathlib and its build artifacts (several GB), which would otherwise be sent to
+# the docker daemon on every rebuild. Keep the context small.
+.lake/
+lake-packages/
+build/
+node_modules/
+.git/
+.i18n/**/*.mo
+**/.DS_Store
