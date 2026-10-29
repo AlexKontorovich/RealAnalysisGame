@@ -27,6 +27,12 @@ For absolutely convergent series, the tail becomes arbitrarily small. Any finite
 
 This flexibility is exactly what we need to handle rearrangements, where terms might appear in a completely different order.
 
+## New Definition
+
+**Definition** (`Finset.Nonempty`): A finite set `S` is *nonempty* if it has at least one element. Formally, `S.Nonempty` means `∃ x, x ∈ S`.
+
+Since `S.Nonempty` is an existential statement, once you have `h : S.Nonempty` you can pull out an element with `choose x hx using h`. To split into the cases where `S` is or isn't empty, use `by_cases h : S.Nonempty`.
+
 ## New Theorems
 
 - `sum_le_sum_of_nonneg`: If `S ⊆ T` and all values are nonnegative, then `∑ i ∈ S, f i ≤ ∑ i ∈ T, f i`
@@ -53,6 +59,14 @@ have : ∑ j ∈ {i}, f j ≤ ∑ j ∈ s, f j := by
   apply hf
 norm_num at this
 apply this
+
+/-- `(s : Finset X) := ∃ x, x ∈ s`
+
+A finite set `s` is `Nonempty` if it has at least one element.
+-/
+DefinitionDoc Finset.Nonempty as "Finset.Nonempty"
+
+NewDefinition Finset.Nonempty
 
 /--
 If `s ⊆ t`, and `0 ≤ f i`, for all `i ∈ t`, then `∑ i ∈ s, f i ≤ ∑ i ∈ t, f i`.

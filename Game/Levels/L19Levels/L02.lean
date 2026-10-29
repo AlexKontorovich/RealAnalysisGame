@@ -20,6 +20,16 @@ In this level, we introduce the formal concept of a rearrangement and prove a cr
 
 A rearrangement `σ` gives us a new ordering of ℕ. For a sequence `a`, the rearranged sequence `a ∘ σ` is defined by `(a ∘ σ) n = a (σ n)`.
 
+## New Theorems
+
+**Theorem** (`mem_image`): For a function `f : X → Y` and a finite set `s`, `y ∈ image f s ↔ ∃ x ∈ s, f x = y`. In other words, `y` is in the image of `s` exactly when some element of `s` maps to `y`.
+
+So `rewrite [mem_image]` turns a goal like `m ∈ image σ (range n)` into `∃ a ∈ range n, σ a = m`, which you can then prove by finding a suitable `a` with `use`.
+
+**Theorem** (`mem_range`): For natural numbers `m` and `n`, `m ∈ range n ↔ m < n`. Recall that `range n` is the finite set `{0, 1, ..., n-1}`.
+
+So `rewrite [mem_range]` turns a membership goal like `a ∈ range n` into the inequality `a < n`, which tools like `linarith` can handle.
+
 ## The Main Result
 
 **Theorem** (`EventuallyCovers_of_Rearrangement`): If `σ` is a rearrangement, then for any `M : ℕ`, there exists `N` such that for all `n ≥ N`, we have:
@@ -43,24 +53,39 @@ Your task: Prove that every rearrangement eventually covers any initial segment!
 
 def Rearrangement (σ : ℕ → ℕ) : Prop := Injective σ ∧ Surjective σ
 
-/--
-A function `f` is called `Injective` if: for all `i, j`, `f i = f j → i = j`.
+/-- `(f : X → Y) := ∀ ⦃i j⦄, f i = f j → i = j`
+
+A function `f : X → Y` is called `Injective` if: for all `i, j`, `f i = f j → i = j`.
 -/
 DefinitionDoc Injective as "Injective"
 
 
-/--
-A function `f : X → Y` called `Surjective` if: for all `y : Y`, `∃ x : X` so that `f x = y`.
+/-- `(f : X → Y) := ∀ y, ∃ x, f x = y`
+
+A function `f : X → Y` is called `Surjective` if: for all `y : Y`, `∃ x : X` so that `f x = y`.
 -/
 DefinitionDoc Surjective as "Surjective"
 
 
-/--
+/-- `(σ : ℕ → ℕ) := Injective σ ∧ Surjective σ`
+
 A `Rearrangement` `σ : ℕ → ℕ` is a function that is `Injective` and `Surjective`.
 -/
 DefinitionDoc Rearrangement as "Rearrangement"
 
 NewDefinition Rearrangement Surjective Injective
+
+/--
+For `f : X → Y` and a finite set `s`, `y ∈ image f s ↔ ∃ x ∈ s, f x = y`.
+-/
+TheoremDoc Finset.mem_image as "mem_image" in "x∈U"
+
+/--
+For natural numbers `m` and `n`, `m ∈ range n ↔ m < n`.
+-/
+TheoremDoc Finset.mem_range as "mem_range" in "x∈U"
+
+NewTheorem Finset.mem_image Finset.mem_range
 
 /--
   If `σ` is a `Rearrangement`, then for any `M`, there is an `N`, so that,
