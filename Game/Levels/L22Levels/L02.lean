@@ -126,7 +126,7 @@ have h4 : |f N y - f N x| < ε / 3 := by apply hδ₂ y hy
 linarith [h1, h2, h3, h4]
 
 Conclusion "
-#Redemption and the Power of Uniformity
+# Redemption and the Power of Uniformity
 
 Magnificent! You've just completed one of the most important theorems in real analysis—the theorem that rescued Cauchy's intuition and clarified one of the fundamental relationships in mathematics.
 
