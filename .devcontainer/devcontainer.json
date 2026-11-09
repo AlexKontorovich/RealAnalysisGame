@@ -1,32 +1,38 @@
 {
-  "dockerComposeFile": "./docker-compose.yml",
-  "service": "game",
-  "workspaceFolder": "/home/node/game",
-  "forwardPorts": [3000],
-  // These settings make sure that the created files (lake-packages etc.) are owned
-  // by the user and not `root`.
-  // see also https://containers.dev/implementors/json_reference/
-  // and https://code.visualstudio.com/remote/advancedcontainers/add-nonroot-user
-  "remoteUser": "node",
-  "updateRemoteUserUID": true,
-  // I don't know why I need this, but I did...
-  "overrideCommand": true,
-  "onCreateCommand": {
-    "npm_install": "(cd ~/lean4game && npm install) || echo \"ERROR: `cd ~/lean4game && npm install` failed\", try running it manually in your dev-container!",
-    "lake_build": "(cd ~/game && lake update -R && lake build) || echo \"ERROR: `cd ~/game && lake update -R && lake exe cache get && lake build` failed!, try running it manually in your dev-container!\""
+  "name": "game",
+
+  "build": {
+    "dockerfile": "Dockerfile",
+    // the Dockerfile reads `lean-toolchain`
+    "context": ".."
   },
-  "postStartCommand": "(cd ~/lean4game && export VITE_LEAN4GAME_SINGLE=true && npm start) || echo \"ERROR: Did not start game server! See if you have warnings above, then try to start it manually using `cd ~/lean4game && export VITE_LEAN4GAME_SINGLE=true && npm start`!\"",
+
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {}
+  },
+
   "customizations": {
     "vscode": {
-      "settings": {
-        "remote.autoForwardPorts": false
-      },
-      "extensions": [
-        "leanprover.lean4"
-      ]
-    },
-    "codespaces": {
-      "openFiles": ["Game.lean"]
+      "extensions": ["leanprover.lean4"]
     }
-  }
+  },
+
+  "remoteEnv": {
+    // don't expose the host's forwarded SSH agent
+    "SSH_AUTH_SOCK": ""
+  },
+
+  "remoteUser": "node",
+  "containerUser": "node",
+
+  "runArgs": ["--cap-drop=ALL", "--security-opt=no-new-privileges:true"],
+
+  // the game server, see `start-server.sh`
+  "forwardPorts": [3000],
+  "portsAttributes": {
+    "3000": { "label": "Game", "onAutoForward": "openBrowserOnce" }
+  },
+  // builds the game, see `post-create.sh`
+  "postCreateCommand": ".devcontainer/post-create.sh",
+  "postAttachCommand": ".devcontainer/start-server.sh"
 }
